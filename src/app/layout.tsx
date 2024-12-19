@@ -25,8 +25,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex flex-col items-center`}
       >
+        <header id="app-header"
+          className=" h-[20vh] flex flex-col w-full items-center justify-center border border-black">
+          <h1 className={`text-2xl font-extrabold`}>
+            Todo App
+          </h1>
+        </header>
         {children}
       </body>
     </html>
