@@ -3,6 +3,7 @@ import TodoView from "./components/ToDoView";
 import { ToDo } from "@/_types/client-types";
 import { AddIcon } from "@/_icons/icons";
 
+export const revalidate = 0;
 
 export default async function Home() {
 

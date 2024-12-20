@@ -10,16 +10,12 @@ import { AddIcon } from "@/_icons/icons";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
-interface TaskPageProps {
-  todo?: ToDo
-}
+export default function TaskPage() {
 
-export default function TaskPage(props: TaskPageProps) {
-
-  const todo = props.todo ? props.todo : defaultTodo
+  // const todo = props.todo ? props.todo : defaultTodo
   const router = useRouter();
 
-  const [newTodo, setNewTodo] = useState<ToDo>(todo)
+  const [newTodo, setNewTodo] = useState<ToDo>(defaultTodo)
 
   const colorClasses: { [color: string]: string } = {
     red: "bg-todo-red",
