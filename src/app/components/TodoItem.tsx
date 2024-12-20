@@ -29,7 +29,7 @@ export default function TodoItem(props: TodoItemProps) {
       onClick={(e) => {
         e.preventDefault();
         if (e.target instanceof HTMLElement) {
-          console.log(e.target.nodeName)
+
           if (e.target.nodeName === "INPUT") {
             return;
           }

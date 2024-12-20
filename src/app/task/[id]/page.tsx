@@ -41,7 +41,6 @@ export default function TaskPage() {
 
     }
 
-    console.log(id);
     if (id === "new") {
       return;
     }
@@ -90,13 +89,10 @@ export default function TaskPage() {
 
     updatedTodo.color = color;
 
-    console.log(updatedTodo);
-
     setNewTodo(updatedTodo);
 
   }
 
-  console.log("TaskPage/newTodo: ", newTodo);
 
   function handleBack() {
     setNewTodo(defaultTodo);
@@ -126,34 +122,26 @@ export default function TaskPage() {
           if (!newRes.ok) {
             throw new Error("Something went wrong while adding new Todo item")
           }
-
-          const newData = await newRes.json();
-
-          console.log(newData);
           break;
         default:
-
           const updateRes = await fetch(`${SERVER_URL}/api/todo`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({ ...req, id: Number(params.id) })
-          })
+          });
 
           if (!updateRes.ok) {
             throw new Error("Something went wrong while updating Todo Item")
-          }
-
-          const updateData = await updateRes.json();
-          console.log(updateData);
-      }
+          };
+      };
 
       router.push("/");
 
     } catch (e) {
       console.error(e);
-      alert("item not added")
+      alert("item not added");
       setNewTodo(defaultTodo);
     }
 
@@ -171,7 +159,6 @@ export default function TaskPage() {
           h-12 w-12 mx-2 my-2 rounded-full `}>
         <button className={`w-full h-full`} onClick={(e) => {
           e.preventDefault();
-          console.log(color);
           selectColor(color)
         }}>
         </button>
