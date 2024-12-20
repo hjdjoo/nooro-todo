@@ -1,6 +1,6 @@
 ## Getting Started
 
-# Run development server
+# To run development server:
 ```bash
 npm run dev
 # or
@@ -11,4 +11,18 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Start the app:
+
+  1. Ensure that the accompanying server app is running (default localhost:5000)
+
+  2. Build app
+    ```bash
+    npm run build
+    ```
+
+  3. Start
+    ```bash
+    npm start
+    ```
+
+  4. The app should now be running on http://localhost:3000.
