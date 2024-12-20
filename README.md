@@ -17,13 +17,13 @@ bun dev
 
   2. Build app
 
-    ```bash
+    ```
     npm run build
     ```
 
   3. Start
-  
-    ```bash
+
+    ```
     npm start
     ```
 
