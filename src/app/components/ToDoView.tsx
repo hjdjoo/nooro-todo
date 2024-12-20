@@ -129,7 +129,6 @@ export default function TodoView(props: TodoViewProps) {
         />
       )
     }
-
   })
 
   const completedItems = todoList.map((item) => {
@@ -142,16 +141,13 @@ export default function TodoView(props: TodoViewProps) {
           updateItem={toggleComplete}
         />
       )
-
     }
-
-
   })
 
 
   return (
     <div id="todo-items-view"
-      className="flex flex-col items-center justify-start">
+      className="flex flex-col items-center justify-start border border-gray-500">
       <section id="todo-summary"
         className="w-full flex justify-between px-2">
         <div id="tasks-number"

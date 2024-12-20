@@ -16,9 +16,13 @@ export default function TodoItem(props: TodoItemProps) {
       className="h-16 w-[60vw] flex justify-evenly items-center m-2 bg-slate-400 rounded-md">
       <div id={`todo-item-${item.id}-complete`}
         className={`grow-0`}>
-        <input type="checkbox" checked={item.complete} value={item.id} onChange={() => {
-          updateItem(item, item.complete)
-        }} />
+        <input type="checkbox"
+          className={`checkbox-rounded`}
+          checked={item.complete}
+          value={item.id}
+          onChange={() => {
+            updateItem(item, item.complete)
+          }} />
       </div>
       <div id={`todo-item-${item.id}-title`}
         className={`w-[60%]`}>

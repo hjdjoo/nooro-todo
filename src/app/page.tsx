@@ -10,7 +10,8 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <main id="homepage-main" className="h-[80vh] w-full flex flex-col items-center pt-12 border border-black">
+      <main id="homepage-main"
+        className="h-[80vh] w-screen flex flex-col items-center pt-12 bg-dark-secondary">
         <Link href="/task"
           className="absolute top-[calc(20vh-1.5rem)] w-[50%] h-12">
           <button id="create-task-button"
