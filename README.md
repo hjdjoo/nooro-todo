@@ -16,11 +16,13 @@ bun dev
   1. Ensure that the accompanying server app is running (default localhost:5000)
 
   2. Build app
+
     ```bash
     npm run build
     ```
 
   3. Start
+  
     ```bash
     npm start
     ```
