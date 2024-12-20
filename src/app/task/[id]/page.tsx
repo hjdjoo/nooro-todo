@@ -1,7 +1,8 @@
 "use client"
 
 import { ToDo } from "@/_types/client-types"
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { defaultTodo } from "@/_const/defaultTodo";
 
@@ -10,12 +11,45 @@ import { AddIcon } from "@/_icons/icons";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
+
 export default function TaskPage() {
 
   // const todo = props.todo ? props.todo : defaultTodo
+  const params = useParams<{ id: string }>();
+
   const router = useRouter();
 
   const [newTodo, setNewTodo] = useState<ToDo>(defaultTodo)
+
+  useEffect(() => {
+
+    const { id } = params;
+
+    async function getTaskById(id: string) {
+
+      const res = await fetch(`http://localhost:5000/api/todo/${id}`, {
+        method: "GET"
+      })
+
+      if (!res.ok) {
+        console.error("Something went wrong while fetching todo")
+      }
+
+      const data: ToDo = await res.json();
+
+      setNewTodo(data);
+
+    }
+
+    if (id === "new") {
+      return;
+    }
+
+    if (Number(id)) {
+      getTaskById(id);
+    }
+
+  }, [params])
 
   const colorClasses: { [color: string]: string } = {
     red: "bg-todo-red",
@@ -55,13 +89,10 @@ export default function TaskPage() {
 
     updatedTodo.color = color;
 
-    console.log(updatedTodo);
-
     setNewTodo(updatedTodo);
 
   }
 
-  console.log("TaskPage/newTodo: ", newTodo);
 
   function handleBack() {
     setNewTodo(defaultTodo);
@@ -70,32 +101,47 @@ export default function TaskPage() {
 
   async function handleSubmit() {
     try {
+
       const req = {
         title: newTodo.title,
         color: newTodo.color,
         complete: newTodo.complete
       }
 
-      const res = await fetch(`${SERVER_URL}/api/todo/new`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(req)
-      });
+      switch (params.id) {
+        case "new":
 
-      if (!res.ok) {
-        throw new Error("Something went wrong while adding new Todo item")
-      }
+          const newRes = await fetch(`${SERVER_URL}/api/todo/new`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(req)
+          });
 
-      const data = await res.json();
+          if (!newRes.ok) {
+            throw new Error("Something went wrong while adding new Todo item")
+          }
+          break;
+        default:
+          const updateRes = await fetch(`${SERVER_URL}/api/todo`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ...req, id: Number(params.id) })
+          });
 
-      console.log(data);
-      router.push("/")
+          if (!updateRes.ok) {
+            throw new Error("Something went wrong while updating Todo Item")
+          };
+      };
+
+      router.push("/");
 
     } catch (e) {
       console.error(e);
-      alert("item not added")
+      alert("item not added");
       setNewTodo(defaultTodo);
     }
 
@@ -113,7 +159,6 @@ export default function TaskPage() {
           h-12 w-12 mx-2 my-2 rounded-full `}>
         <button className={`w-full h-full`} onClick={(e) => {
           e.preventDefault();
-          console.log(color);
           selectColor(color)
         }}>
         </button>
@@ -122,7 +167,7 @@ export default function TaskPage() {
   })
 
   return (
-    <main id="homepage-main"
+    <main id="taskpage-main"
       className="h-[80vh] w-screen flex flex-col items-center pt-12 bg-dark-secondary">
       <div id="add-edit-task-page"
         className={`flex flex-col items-center w-[60vw]`}>
@@ -134,7 +179,7 @@ export default function TaskPage() {
           }}>
           {backIcon}
         </button>
-        <form action=""
+        <form
           className={`w-full`}>
           <label htmlFor="new-todo-input">
             <div id="new-task-title"
@@ -165,7 +210,7 @@ export default function TaskPage() {
             }}>
             <div className={"w-full flex justify-center"}
             >
-              Add Task
+              {params.id === "new" ? "Add Task" : "Update Task"}
               <div className="w-6 h-6 ml-2">
                 {addIcon}
               </div>

@@ -34,8 +34,6 @@ export default function TodoView(props: TodoViewProps) {
 
       setTodoList(updatedTodos);
 
-      console.log("item completed? ", status)
-
       const req = {
         id: item.id,
         complete: !status
@@ -52,10 +50,6 @@ export default function TodoView(props: TodoViewProps) {
       if (!res.ok) {
         throw new Error("Something went wrong while updating item.")
       }
-
-      const data: ToDo = await res.json();
-
-      console.log(data);
 
 
     } catch (e) {
@@ -87,10 +81,6 @@ export default function TodoView(props: TodoViewProps) {
       if (!res.ok) {
         throw new Error(`Something went wrong while deleting item from DB: ${res.status}`)
       }
-
-      const data = await res.json();
-
-      console.log(data);
 
     } catch (e) {
       console.error(e);
