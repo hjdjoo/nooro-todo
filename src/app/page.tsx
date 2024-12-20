@@ -17,7 +17,7 @@ export default async function Home() {
     <div className="flex flex-col justify-center items-center">
       <main id="homepage-main"
         className="h-[80vh] w-screen flex flex-col items-center pt-12 bg-dark-secondary">
-        <Link href="/task"
+        <Link href="/task/new"
           className="absolute top-[calc(20vh-1.5rem)] w-[50%] h-12">
           <button id="create-task-button"
             className="z-10 flex justify-center items-center bg-theme-primary text-font-primary rounded-md h-full w-full ">

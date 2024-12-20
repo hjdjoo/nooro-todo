@@ -1,4 +1,6 @@
+
 import { ToDo } from "@/_types/client-types";
+import { useRouter } from "next/navigation";
 import { Trashcan } from "@/_icons/icons";
 
 interface TodoItemProps {
@@ -8,6 +10,8 @@ interface TodoItemProps {
 }
 
 export default function TodoItem(props: TodoItemProps) {
+
+  const router = useRouter();
 
   const activeItemClasses: { [property: string]: string } = {
     decorate: "line-through",
@@ -21,14 +25,28 @@ export default function TodoItem(props: TodoItemProps) {
   return (
     <div key={`todo-item-${item.id}`}
       id={`todo-item-${item.id}`}
-      className="h-16 w-[50vw] flex justify-evenly items-center m-2 bg-dark-secondary-light rounded-md">
+      className="h-16 w-[50vw] flex justify-evenly items-center m-2 bg-dark-secondary-light rounded-md hover:cursor-pointer"
+      onClick={(e) => {
+        e.preventDefault();
+        if (e.target instanceof HTMLElement) {
+          console.log(e.target.nodeName)
+          if (e.target.nodeName === "INPUT") {
+            return;
+          }
+          if (e.target.nodeName === "DIV" || e.target.nodeName === "P") {
+            router.push(`/task/${item.id}`)
+          }
+        }
+      }}
+    >
       <div id={`todo-item-${item.id}-complete`}
         className={`flex items-center justify-center border-2 border-theme-primary-light rounded-full w-[1rem] h-[1rem]`}>
         <input type="checkbox"
           className={`checkbox-rounded checkbox-color`}
           checked={item.complete}
           value={item.id}
-          onChange={() => {
+          onChange={(e) => {
+            e.preventDefault();
             updateItem(item, item.complete)
           }} />
       </div>
