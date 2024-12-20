@@ -1,4 +1,5 @@
 import { ToDo } from "@/_types/client-types";
+import { Trashcan } from "@/_icons/icons";
 
 interface TodoItemProps {
   item: ToDo
@@ -8,16 +9,23 @@ interface TodoItemProps {
 
 export default function TodoItem(props: TodoItemProps) {
 
+  const activeItemClasses: { [property: string]: string } = {
+    decorate: "line-through",
+    color: "text-font-secondary"
+  }
+
   const { item, deleteItem, updateItem } = props
+
+  const trashcan = Trashcan();
 
   return (
     <div key={`todo-item-${item.id}`}
       id={`todo-item-${item.id}`}
-      className="h-16 w-[60vw] flex justify-evenly items-center m-2 bg-slate-400 rounded-md">
+      className="h-16 w-[50vw] flex justify-evenly items-center m-2 bg-dark-secondary-light rounded-md">
       <div id={`todo-item-${item.id}-complete`}
-        className={`grow-0`}>
+        className={`flex items-center justify-center border-2 border-theme-primary-light rounded-full w-[1rem] h-[1rem]`}>
         <input type="checkbox"
-          className={`checkbox-rounded`}
+          className={`checkbox-rounded checkbox-color`}
           checked={item.complete}
           value={item.id}
           onChange={() => {
@@ -25,18 +33,19 @@ export default function TodoItem(props: TodoItemProps) {
           }} />
       </div>
       <div id={`todo-item-${item.id}-title`}
-        className={`w-[60%]`}>
+        className={`w-[60%] text-font-primary ${item.complete ? `${activeItemClasses.decorate} ${activeItemClasses.color}` : ""}`}>
         <p>{item.title}</p>
       </div>
-      <div id={`todo-item-${item.id}-delete`}
-        className={`grow-0`}>
-        <button className={`bg-slate-100 px-2`}
-          onClick={() => {
-            deleteItem(item);
-          }}>
-          delete
-        </button>
-      </div>
+      <button className={`px-2`}
+        onClick={() => {
+          deleteItem(item);
+        }}>
+        <div id={`todo-item-${item.id}-delete`}
+          className={`h-[1.5rem] w-[1.5rem] ${!item.complete ? "text-slate-200" : "text-slate-500"}`}>
+          {trashcan}
+        </div>
+      </button>
+
     </div>
   )
 

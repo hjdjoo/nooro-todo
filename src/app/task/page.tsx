@@ -5,6 +5,9 @@ import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { defaultTodo } from "@/_const/defaultTodo";
 
+import { BackIcon } from "@/_icons/icons";
+import { AddIcon } from "@/_icons/icons";
+
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
 interface TaskPageProps {
@@ -31,9 +34,12 @@ export default function TaskPage(props: TaskPageProps) {
   }
 
   const activeColorClasses: { [active: string]: string } = {
-    active: "scale-110",
+    active: "scale-110 border-4 border-white",
     inactive: ""
   }
+
+  const backIcon = BackIcon();
+  const addIcon = AddIcon();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -61,6 +67,11 @@ export default function TaskPage(props: TaskPageProps) {
 
   console.log("TaskPage/newTodo: ", newTodo);
 
+  function handleBack() {
+    setNewTodo(defaultTodo);
+    router.push("/")
+  }
+
   async function handleSubmit() {
     try {
       const req = {
@@ -84,7 +95,6 @@ export default function TaskPage(props: TaskPageProps) {
       const data = await res.json();
 
       console.log(data);
-
       router.push("/")
 
     } catch (e) {
@@ -104,8 +114,7 @@ export default function TaskPage(props: TaskPageProps) {
         className={
           `${colorClasses[color]} 
           ${activeColorClasses[active]} 
-          h-12 
-          w-12`}>
+          h-12 w-12 mx-2 my-2 rounded-full `}>
         <button className={`w-full h-full`} onClick={(e) => {
           e.preventDefault();
           console.log(color);
@@ -117,41 +126,58 @@ export default function TaskPage(props: TaskPageProps) {
   })
 
   return (
-    <div id="add-edit-task-page"
-      className={`flex flex-col items-center w-[60vw]`}>
-      <button id="back-button"
-        className={`self-start bg-slate-200`}>Back</button>
-      <form action=""
-        className={`w-full`}>
-        <label htmlFor="new-todo-input">
-          <div>
-            Title
-          </div>
-          <input id="new-todo-input" type="text"
-            placeholder="Ex. Brush you teeth"
-            className={`bg-slate-200 w-full h-12 rounded-md px-2`}
-            value={newTodo.title}
-            name="title"
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="new-todo-color">
-          <div>
-            Color
-          </div>
-          <div id="select-color-section" className={`flex`}>
-            {colorPickers}
-          </div>
-        </label>
-        <button id="add-task-button"
-          className={`w-full bg-blue-300 h-12 rounded-md`}
+    <main id="homepage-main"
+      className="h-[80vh] w-screen flex flex-col items-center pt-12 bg-dark-secondary">
+      <div id="add-edit-task-page"
+        className={`flex flex-col items-center w-[60vw]`}>
+        <button id="back-button"
+          className={`self-start text-slate-200 mb-10 h-8 w-8`}
           onClick={(e) => {
             e.preventDefault();
-            handleSubmit();
+            handleBack();
           }}>
-          Add Task +</button>
-      </form>
-    </div>
+          {backIcon}
+        </button>
+        <form action=""
+          className={`w-full`}>
+          <label htmlFor="new-todo-input">
+            <div id="new-task-title"
+              className="mb-2 text-theme-primary-light font-extrabold ">
+              Title
+            </div>
+            <input id="new-todo-input" type="text"
+              placeholder="Ex. Brush you teeth"
+              className={`bg-slate-200 w-full h-12 rounded-md px-2 mb-4`}
+              value={newTodo.title}
+              name="title"
+              onChange={handleChange}
+            />
+          </label>
+          <label htmlFor="new-todo-color">
+            <div className="mb-2 text-theme-primary-light font-extrabold">
+              Color
+            </div>
+            <div id="select-color-section" className={`flex mb-8`}>
+              {colorPickers}
+            </div>
+          </label>
+          <button id="add-task-button"
+            className={`w-full bg-theme-primary text-font-primary h-12 rounded-md`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}>
+            <div className={"w-full flex justify-center"}
+            >
+              Add Task
+              <div className="w-6 h-6 ml-2">
+                {addIcon}
+              </div>
+            </div>
+          </button>
+        </form>
+      </div>
+    </main>
   )
 
 }

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ToDo } from "@/_types/client-types"
 import TodoItem from "./TodoItem";
 
+import { Document } from "@/_icons/icons";
+
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL!
 
 interface TodoViewProps {
@@ -16,8 +18,11 @@ export default function TodoView(props: TodoViewProps) {
 
   const [todoList, setTodoList] = useState<ToDo[]>(todos);
 
+  const documentIcon = Document();
+
   let todosComplete = 0;
 
+  // manage completion status; set state and update db.
   async function toggleComplete(item: ToDo, status: boolean) {
     const currTodos = [...todoList];
 
@@ -60,6 +65,7 @@ export default function TodoView(props: TodoViewProps) {
 
   }
 
+  // remove item from database and sync state
   async function deleteItem(item: ToDo) {
     const currTodos = [...todoList];
 
@@ -86,7 +92,6 @@ export default function TodoView(props: TodoViewProps) {
 
       console.log(data);
 
-
     } catch (e) {
       console.error(e);
       setTodoList(currTodos);
@@ -94,17 +99,19 @@ export default function TodoView(props: TodoViewProps) {
 
   }
 
-
+  // render default component if todo list is empty
   if (!todoList.length) {
     return (
-      <div>
-        <div>
-          Icon
+      <div id="default-todo-items"
+        className={`flex flex-col pt-10 items-center text-font-secondary`}>
+        <div id="add-todo-icon"
+          className={`h-24 w-24 mb-2`}>
+          {documentIcon}
         </div>
-        <h3>
+        <p className="font-extrabold mb-2">
           {"You don't have any tasks registered yet."}
-        </h3>
-        <p>Create tasks and organize your to-do items</p>
+        </p>
+        <p>{"Create tasks and organize your to-do items"}</p>
       </div>
     )
   }
@@ -149,19 +156,19 @@ export default function TodoView(props: TodoViewProps) {
     <div id="todo-items-view"
       className="flex flex-col items-center justify-start border border-gray-500">
       <section id="todo-summary"
-        className="w-full flex justify-between px-2">
+        className="w-full flex justify-between px-2 py-2">
         <div id="tasks-number"
-          className={`flex text-sm`}>
+          className={`flex items-center text-sm text-theme-primary-light font-extrabold`}>
           Tasks
-          <div className={`ml-1`}>
+          <div className={`flex items-center justify-center ml-1 h-[1.5rem] w-[1.5rem] bg-dark-secondary-light text-font-primary rounded-full text-xs`}>
             {todoList.length}
           </div>
         </div>
         <div id="tasks-completed"
-          className={`flex text-sm`}>
+          className={`flex items-center text-sm  text-theme-primary-light font-extrabold`}>
           Completed
           <div
-            className={`ml-1`}
+            className={`flex items-center justify-center ml-1 h-[1.5rem] px-3 bg-dark-secondary-light text-font-primary rounded-full text-xs`}
           >
             {`${todosComplete} of ${todoList.length}`}
           </div>
